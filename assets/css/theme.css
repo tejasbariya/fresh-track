@@ -1,0 +1,58 @@
+/* freshtrack/assets/css/theme.css */
+
+:root[data-theme="dark"] {
+    --bg-primary: #141210;
+    --bg-secondary: #1a1715;
+    --text-primary: #f2efe9;
+    --text-muted: #8c8273;
+    --accent-primary: #c8a96e;
+    --accent-hover: #dcc18f;
+    --surface-glass: rgba(30, 26, 23, 0.6);
+    --surface-solid: #211e1b;
+    --border-color: rgba(200, 169, 110, 0.15);
+    
+    --semantic-fresh: #4d8b55;
+    --semantic-fresh-bg: rgba(77, 139, 85, 0.15);
+    --semantic-soon: #d97736;
+    --semantic-soon-bg: rgba(217, 119, 54, 0.15);
+    --semantic-expired: #be4b4b;
+    --semantic-expired-bg: rgba(190, 75, 75, 0.15);
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-glow: 0 0 15px rgba(200, 169, 110, 0.1);
+}
+
+:root[data-theme="light"], :root {
+    --bg-primary: #faf7f2;
+    --bg-secondary: #f2efe9;
+    --text-primary: #2d2a26;
+    --text-muted: #736b60;
+    --accent-primary: #8b5e2a;
+    --accent-hover: #6e481e;
+    --surface-glass: rgba(255, 255, 255, 0.7);
+    --surface-solid: #ffffff;
+    --border-color: rgba(139, 94, 42, 0.15);
+    
+    --semantic-fresh: #3a7a42;
+    --semantic-fresh-bg: rgba(58, 122, 66, 0.1);
+    --semantic-soon: #c26120;
+    --semantic-soon-bg: rgba(194, 97, 32, 0.1);
+    --semantic-expired: #ad3939;
+    --semantic-expired-bg: rgba(173, 57, 57, 0.1);
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    --shadow-glow: 0 0 15px rgba(139, 94, 42, 0.1);
+}
+
+:root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --blur-strength: blur(12px);
+}

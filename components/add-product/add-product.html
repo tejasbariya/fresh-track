@@ -1,0 +1,87 @@
+<!-- freshtrack/components/add-product/add-product.html -->
+
+<div class="dashboard-header flex justify-between items-center" style="margin-bottom: 2rem;">
+    <div>
+        <h2 class="flex items-center gap-2">
+            <a href="#!/dashboard" class="text-muted" style="text-decoration: none;" title="Back to Dashboard">←</a>
+            Add New Product
+        </h2>
+        <p class="text-muted text-sm" style="margin-left: 2rem;">Track a new item in your pantry.</p>
+    </div>
+</div>
+
+<div class="glass-card animate-entrance" style="max-width: 800px; margin: 0 auto; padding: 2.5rem;">
+    
+    <form name="addProductForm" ng-submit="vm.save()" novalidate class="flex flex-col gap-6">
+        
+        <!-- Two Column Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            
+            <!-- Left Column -->
+            <div class="flex flex-col gap-4">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Product Name *</label>
+                    <input type="text" class="input-control" ng-model="vm.product.name" required placeholder="e.g., Organic Milk">
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Category</label>
+                    <div class="flex gap-2">
+                        <div class="emoji-preview flex items-center justify-center bg-surface text-xl" style="width: 46px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--surface-solid);">
+                            {{ vm.product.emoji }}
+                        </div>
+                        <select class="input-control flex-1" ng-model="vm.product.category" ng-change="vm.updateEmoji()">
+                            <option ng-repeat="cat in vm.categories" value="{{cat.name}}">{{cat.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group flex gap-4" style="margin-bottom:0;">
+                    <div class="flex-1">
+                        <label class="form-label">Price (₹) *</label>
+                        <input type="number" class="input-control" ng-model="vm.product.price" required min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="flex-1">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="input-control" ng-model="vm.product.qty" required min="1" step="1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="flex flex-col gap-4">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date Added</label>
+                    <input type="date" class="input-control" ng-model="vm.product.added" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Expiry Date *</label>
+                    <input type="date" class="input-control" ng-model="vm.product.expiry" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Quality Rating</label>
+                    <div class="stars-picker flex gap-2" style="font-size: 2rem; color: var(--accent-primary); cursor: pointer;">
+                        <span ng-repeat="s in [1,2,3,4,5]" 
+                              ng-class="s <= vm.product.rating ? 'active' : 'inactive'" 
+                              ng-click="vm.setRating(s)"
+                              ng-style="{'transition': 'var(--transition)', 'opacity': (s <= vm.product.rating ? '1' : '0.3')}">
+                            ★
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-4 items-center">
+            <a href="#!/dashboard" class="btn btn-outline">Cancel</a>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </div>
+        
+    </form>
+</div>

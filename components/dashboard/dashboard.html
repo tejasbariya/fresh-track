@@ -1,0 +1,149 @@
+<!-- freshtrack/components/dashboard/dashboard.html -->
+
+<div class="dashboard-header flex justify-between items-center" style="margin-bottom: 2rem;">
+    <div>
+        <h2>Dashboard</h2>
+        <p class="text-muted text-sm">Overview of your pantry inventory.</p>
+    </div>
+    <a href="#!/add" class="btn btn-primary" style="text-decoration: none;">+ Add Product</a>
+</div>
+
+<!-- Recommendation Banners -->
+<div class="banners-container flex flex-col gap-4" style="margin-bottom: 2rem;">
+    <div class="glass-card flex justify-between items-center animate-entrance" style="border-left: 4px solid var(--semantic-expired); padding: 1rem 1.5rem;" ng-if="vm.stats.expired > 0">
+        <div class="flex items-center gap-4">
+            <span style="font-size: 1.5rem; color: var(--semantic-expired);">🗑️</span>
+            <div>
+                <h4 style="margin:0; color: var(--semantic-expired);">Time to Clean Up</h4>
+                <p class="text-sm text-muted" style="margin:0;">You have {{ vm.stats.expired }} expired products taking up space.</p>
+            </div>
+        </div>
+        <button class="btn btn-danger" ng-click="vm.throwOutExpired()">Throw Out All</button>
+    </div>
+    
+    <div class="glass-card flex justify-between items-center animate-entrance" style="border-left: 4px solid var(--semantic-soon); padding: 1rem 1.5rem; animation-delay: 100ms;" ng-if="vm.stats.soon > 0">
+        <div class="flex items-center gap-4">
+            <span style="font-size: 1.5rem; color: var(--semantic-soon);">⏳</span>
+            <div>
+                <h4 style="margin:0; color: var(--semantic-soon);">Use These Soon!</h4>
+                <p class="text-sm text-muted" style="margin:0;">{{ vm.stats.soon }} products are expiring within 3 days.</p>
+            </div>
+        </div>
+        <button class="btn btn-outline" ng-click="vm.setFilter('soon')">View Items</button>
+    </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+    <div class="glass-panel stat-card" style="padding: 1.5rem; text-align: center;">
+        <div class="text-muted text-sm font-bold" style="text-transform: uppercase;">Total Items</div>
+        <div class="text-2xl font-bold" style="margin-top: 0.5rem; font-family: var(--font-heading);">{{ vm.stats.total }}</div>
+    </div>
+    <div class="glass-panel stat-card" style="padding: 1.5rem; text-align: center; border-bottom: 3px solid var(--semantic-fresh);">
+        <div class="text-sm font-bold" style="color: var(--semantic-fresh); text-transform: uppercase;">Fresh</div>
+        <div class="text-2xl font-bold" style="margin-top: 0.5rem; font-family: var(--font-heading);">{{ vm.stats.fresh }}</div>
+    </div>
+    <div class="glass-panel stat-card" style="padding: 1.5rem; text-align: center; border-bottom: 3px solid var(--semantic-soon);">
+        <div class="text-sm font-bold" style="color: var(--semantic-soon); text-transform: uppercase;">Expiring Soon</div>
+        <div class="text-2xl font-bold" style="margin-top: 0.5rem; font-family: var(--font-heading);">{{ vm.stats.soon }}</div>
+    </div>
+    <div class="glass-panel stat-card" style="padding: 1.5rem; text-align: center; border-bottom: 3px solid var(--semantic-expired);">
+        <div class="text-sm font-bold" style="color: var(--semantic-expired); text-transform: uppercase;">Expired</div>
+        <div class="text-2xl font-bold" style="margin-top: 0.5rem; font-family: var(--font-heading);">{{ vm.stats.expired }}</div>
+    </div>
+</div>
+
+<!-- Controls (Search & Filter) -->
+<div class="controls-bar flex justify-between items-center" style="margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+    <div class="filter-group flex gap-2" style="background: var(--surface-glass); padding: 0.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <button class="btn btn-sm" ng-class="vm.activeFilter === 'all' ? 'filter-active' : 'filter-inactive'" ng-click="vm.setFilter('all')">All</button>
+        <button class="btn btn-sm" ng-class="vm.activeFilter === 'fresh' ? 'filter-active' : 'filter-inactive'" ng-click="vm.setFilter('fresh')">Fresh</button>
+        <button class="btn btn-sm" ng-class="vm.activeFilter === 'soon' ? 'filter-active' : 'filter-inactive'" ng-click="vm.setFilter('soon')">Expiring Soon</button>
+        <button class="btn btn-sm" ng-class="vm.activeFilter === 'expired' ? 'filter-active' : 'filter-inactive'" ng-click="vm.setFilter('expired')">Expired</button>
+    </div>
+    <div class="search-box" style="width: 100%; max-width: 300px;">
+        <input type="text" class="input-control" placeholder="Search products..." ng-model="vm.searchQuery" ng-change="vm.updateSearch()">
+    </div>
+</div>
+
+<!-- Empty State -->
+<div class="glass-card text-center animate-entrance" ng-if="vm.filteredProducts.length === 0" style="padding: 4rem 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">🛒</div>
+    <h3 class="text-xl">No products found</h3>
+    <p class="text-muted">Try adjusting your filters or search, or add a new product.</p>
+</div>
+
+<!-- Product Grid -->
+<div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+    <div class="glass-card product-card animate-entrance" ng-repeat="product in vm.filteredProducts track by product.id" ng-style="{'animation-delay': ($index * 40) + 'ms'}">
+        <div class="card-header flex justify-between items-start" style="margin-bottom: 1rem;">
+            <div class="flex gap-4 items-center">
+                <div class="emoji-avatar flex items-center justify-center text-2xl" style="width: 48px; height: 48px; background: var(--surface-solid); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    {{ product.emoji }}
+                </div>
+                <div>
+                    <h3 class="text-lg" style="margin: 0;">{{ product.name }}</h3>
+                    <div class="text-sm text-muted">{{ product.category }} • {{ product.qty }} unit(s)</div>
+                </div>
+            </div>
+            <div class="badge" ng-class="'badge-' + product._statusInfo.status">
+                <span ng-if="product._statusInfo.status === 'fresh'">Fresh</span>
+                <span ng-if="product._statusInfo.status === 'soon'">{{ product._statusInfo.daysLeft }}d Left</span>
+                <span ng-if="product._statusInfo.status === 'expired'">Expired</span>
+            </div>
+        </div>
+        
+        <div class="card-body" style="margin-bottom: 1.5rem;">
+            <div class="flex justify-between items-end" style="margin-bottom: 0.5rem;">
+                <span class="text-2xl font-bold" style="font-family: var(--font-heading); color: var(--accent-primary);">₹{{ product.price.toFixed(2) }}</span>
+                <div class="stars" style="color: var(--accent-primary); font-size: 0.8rem;">
+                    <span ng-repeat="s in [1,2,3,4,5]" ng-class="s <= product.rating ? 'active' : 'inactive'" style="opacity: {{ s <= product.rating ? '1' : '0.2' }}">★</span>
+                </div>
+            </div>
+            
+            <div class="dates flex justify-between text-xs text-muted" style="margin-top: 1rem;">
+                <span>Added: {{ product.added | date:'MMM d, yyyy' }}</span>
+                <span ng-class="{'text-danger font-bold': product._statusInfo.status === 'expired', 'text-warning font-bold': product._statusInfo.status === 'soon'}" ng-style="{'color': product._statusInfo.status === 'expired' ? 'var(--semantic-expired)' : product._statusInfo.status === 'soon' ? 'var(--semantic-soon)' : 'inherit'}">
+                    Expires: {{ product.expiry | date:'MMM d, yyyy' }}
+                </span>
+            </div>
+            
+            <div class="progress-bar" style="margin-top: 0.5rem; height: 4px; background: var(--surface-solid); border-radius: 2px; overflow: hidden;">
+                <div class="progress-fill" style="height: 100%; background: var(--accent-primary); transition: width 0.3s ease;" ng-style="{ 'width': product._lifespanProgress + '%', 'background': product._statusInfo.status === 'expired' ? 'var(--semantic-expired)' : product._statusInfo.status === 'soon' ? 'var(--semantic-soon)' : 'var(--semantic-fresh)' }"></div>
+            </div>
+        </div>
+        
+        <div class="card-actions flex gap-2">
+            <button class="btn btn-outline flex-1 text-sm" ng-click="vm.removeProduct(product.id)">Remove</button>
+            <button class="btn btn-danger flex-1 text-sm" ng-if="product._statusInfo.status === 'expired'" ng-click="vm.removeProduct(product.id)">Throw Out</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.filter-active {
+    background: var(--surface-solid);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+}
+.filter-inactive {
+    background: transparent;
+    color: var(--text-muted);
+}
+.filter-inactive:hover {
+    color: var(--text-primary);
+}
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+@media (max-width: 768px) {
+    .controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-box {
+        max-width: 100% !important;
+    }
+}
+</style>

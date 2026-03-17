@@ -1,0 +1,82 @@
+<!-- freshtrack/components/auth/auth.html -->
+
+<div class="auth-wrapper flex justify-center items-center h-full" style="min-height: calc(100vh - 150px);">
+    <div class="glass-card animate-entrance" style="width: 100%; max-width: 420px; padding: 2.5rem;">
+        
+        <div class="text-center" style="margin-bottom: 2rem;">
+            <h2 class="text-2xl text-accent">Welcome to FreshTrack</h2>
+            <p class="text-muted text-sm">Manage your pantry and reduce waste.</p>
+        </div>
+
+        <div class="tab-switcher flex" style="margin-bottom: 2rem; background: var(--surface-solid); border-radius: var(--radius-sm); padding: 0.25rem;">
+            <button class="flex-1 btn" 
+                    ng-class="vm.activeTab === 'login' ? 'active-tab' : 'inactive-tab'" 
+                    ng-click="vm.switchTab('login')">Login</button>
+            <button class="flex-1 btn" 
+                    ng-class="vm.activeTab === 'register' ? 'active-tab' : 'inactive-tab'" 
+                    ng-click="vm.switchTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form name="loginForm" ng-submit="vm.login()" ng-if="vm.activeTab === 'login'" novalidate>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="input-control" ng-model="vm.loginData.email" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="input-control" ng-model="vm.loginData.password" required placeholder="••••••••">
+            </div>
+            
+            <div class="flex flex-col gap-2" style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary w-full" ng-disabled="loginForm.$invalid || vm.isLoading">
+                    {{ vm.isLoading ? 'Signing in...' : 'Sign In' }}
+                </button>
+                <div class="text-center text-xs text-muted" style="margin-top: 1rem;">
+                    <strong>Demo Mode:</strong> Use any email with password <code>demo</code> to load sample data.
+                </div>
+            </div>
+        </form>
+
+        <!-- Register Form -->
+        <form name="registerForm" ng-submit="vm.register()" ng-if="vm.activeTab === 'register'" novalidate>
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="input-control" ng-model="vm.registerData.name" required placeholder="tejas">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="input-control" ng-model="vm.registerData.email" required placeholder="tejas@gmail.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="input-control" ng-model="vm.registerData.password" required minlength="6" placeholder="At least 6 characters">
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary w-full" ng-disabled="registerForm.$invalid || vm.isLoading">
+                    {{ vm.isLoading ? 'Creating Account...' : 'Create Account' }}
+                </button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<style>
+.active-tab {
+    background: var(--surface-glass);
+    box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
+}
+.inactive-tab {
+    background: transparent;
+    color: var(--text-muted);
+}
+.inactive-tab:hover {
+    color: var(--text-primary);
+}
+.text-accent {
+    color: var(--accent-primary);
+}
+</style>

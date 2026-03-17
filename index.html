@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="freshTrackApp" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshTrack</title>
+    <link rel="icon" href="data:,">
+    
+    <!-- Theme Anti-Flash Script -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('ft_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <!-- Google Fonts: Inter for UI, Outfit for Headers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+    <!-- Shared Topbar Component -->
+    <topbar-component></topbar-component>
+
+    <!-- Main View Routing Area -->
+    <main class="app-container" ng-view></main>
+
+    <!-- Shared Toast Component -->
+    <toast-component></toast-component>
+
+    <!-- Utilities -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <!-- AngularJS App & Routes -->
+    <script src="app.js"></script>
+
+    <!-- Services -->
+    <script src="services/theme.service.js"></script>
+    <script src="services/auth.service.js"></script>
+    <script src="services/product.service.js"></script>
+    <script src="components/shared/toast/toast.service.js"></script>
+
+    <!-- Components & Controllers -->
+    <script src="components/shared/topbar/topbar.directive.js"></script>
+    <script src="components/auth/auth.controller.js"></script>
+    <script src="components/dashboard/dashboard.controller.js"></script>
+    <script src="components/add-product/add-product.controller.js"></script>
+
+</body>
+</html>
